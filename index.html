@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Minesweeper</title>
+<style>
+*{
+    color: beige;
+}
+*{
+    background-color: black;
+}
+table,.topic{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width:250px) {
+  .btn {
+      width: 10px;
+      height: 12px;
+  }
+}
+.btn{
+    width: 80px;
+    height: 40px;
+    background-color: aliceblue;
+}
+#points,#result{
+    display: flex;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  font-weight: bolder;
+  font-size: xx-large;
+}
+
+.btn:hover {
+
+    background-color: #6396b8
+}
+
+.btn:active {
+  background-color: #ceebcf;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+</style>
+
+</head>
+<body>
+
+    <div class="topic"><h1>My First Game</h1>
+<h1>Minesweeper</h1>
+</div>
+
+<table id="table">
+</table>
+
+<br/>
+<br/>
+<div id="points">
+</div>
+   <div id="result">
+         
+   </div>
+
+<script>
+
+let cnt=1;
+     for(let i=1;i<=9;i++)
+     {
+        let row=document.getElementById('table').insertRow(i-1);
+         for(let j=1;j<=9;j++)
+         {
+            var Btn= document.createElement("BUTTON");
+            Btn.className="btn";
+            let no= cnt;
+            Btn.id="btn"+no;
+            console.log(Btn.id); 
+
+            var cell = row.insertCell(j-1);
+             cell.appendChild(Btn);  
+             cnt++;
+         }
+     } 
+    
+      let arr=[],sz=81,bomb=[];
+  
+      var score=0;
+      var btn = document.createElement("BUTTON");
+            btn.className="btn";
+            btn.addEventListener("click",refresh);
+
+            function refresh()
+            {
+                window.location.reload();
+
+            }
+
+
+  for(let i=1;i<=81;i++)
+      arr[i]=i;
+
+  for(let i=1;i<=10;i++)
+    {
+       let rndm = Math.floor((Math.random() * sz) + 1);
+        console.log(arr[rndm]+' '+sz);
+           
+        let id= "btn"+arr[rndm];
+       bomb[i]=id;
+
+       arr[rndm]=arr[sz];
+       sz--;
+
+     }
+
+     var btns=document.getElementsByClassName('btn');  
+   for(let i=0;i<btns.length;i++)
+     btns[i].addEventListener("click",user);
+ 
+  function user()
+  {
+      console.log(this.id);
+        for(let i=1;i<=10;i++)
+        {
+            if(bomb[i]==this.id)
+            {
+              Blast();
+              return;
+            }
+        }
+        score++;
+        if(score==71)
+        {
+            document.getElementById("result").innerHTML="Congratulation You Won";
+            document.getElementById("result").style.color="blue";
+            btn.style.color="blue";
+            btn.innerHTML="Want To Play Again"
+            document.getElementById("result").appendChild(btn);
+            END();
+        }
+        let display="Points :"+score; 
+        document.getElementById(this.id).style.backgroundColor="blue";
+        document.getElementById("points").style.color="white";
+        document.getElementById("points").innerHTML=display;
+        document.getElementById(this.id).disabled=true;
+        return;
+  }
+    
+  
+
+          function Blast()
+          {
+          for(let i=1;i<=10;i++)
+            document.getElementById(bomb[i]).style.backgroundColor="red";
+           
+            document.getElementById("result").innerHTML="YOU LOST";
+            document.getElementById("result").style.color="red";
+            btn.style.color="red";
+             btn.innerHTML="Want To Try Again"
+            document.getElementById("result").appendChild(btn);
+            END();
+            return;      
+           
+          }
+             function END()
+             {
+                for(let i=1;i<=81;i++)
+            document.getElementById("btn"+i).disabled=true;
+
+             }
+</script>
+</body>
+</html>
